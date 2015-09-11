@@ -6,8 +6,8 @@ require 'fileutils'
 
 HIDDEN_BIN_DIR = ARGV[0] + '/.heroku/bin'
 
-if(File.exist?('app.json'))
-  file = File.read('app.json')
+if(File.exist?(ARGV[0] + 'app.json'))
+  file = File.read(ARGV[0] + 'app.json')
   data_hash = JSON.parse(file)
   if(data_hash['scripts'] && data_hash['scripts']['post-release'])
     if(File.exist?(HIDDEN_BIN_DIR + '/release'))
