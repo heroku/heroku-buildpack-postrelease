@@ -4,7 +4,7 @@
 require 'json'
 require 'fileutils'
 
-HIDDEN_BIN_DIR = ARGV[0] + '/app/.heroku/bin'
+HIDDEN_BIN_DIR = ARGV[0] + '/.heroku/bin'
 
 if(File.exist?('app.json'))
   file = File.read('app.json')
