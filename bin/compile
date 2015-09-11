@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+# bin/compile <build-dir> <cache-dir> <env-dir>
+
+require 'json'
+require 'fileutils'
+
+HIDDEN_BIN_DIR = ARGV[0] + '/app/.heroku/bin'
+
+if(File.exist?('app.json'))
+  file = File.read('app.json')
+  data_hash = JSON.parse(file)
+  if(data_hash['scripts'] && data_hash['scripts']['post-release'])
+    if(File.exist?(HIDDEN_BIN_DIR + '/release'))
+      puts "-----> Release script already exists in '#{HIDDEN_BIN_DIR}/release'"
+      exit 1
+    end
+    FileUtils.mkdir_p HIDDEN_BIN_DIR unless File.directory?(HIDDEN_BIN_DIR)
+    File.open(HIDDEN_BIN_DIR + '/release', 'w') { |file|
+      file.write("#!/usr/bin/env bash\n\n#{data_hash['scripts']['post-release']}\n")
+      FileUtils.chmod "+x", HIDDEN_BIN_DIR + '/release'
+      puts "-----> Release script created from app.json"
+    }
+  else
+    puts "-----> No post-release script found"
+  end
+else
+  puts "-----> No app.json file found"
+end
