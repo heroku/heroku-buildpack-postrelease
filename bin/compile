@@ -26,3 +26,8 @@ if(File.exist?(ARGV[0] + '/app.json'))
 else
   puts "-----> No app.json file found"
 end
+
+puts "\e[31mThis buildpack has been deprecated and your release command will not be honored anymore.
+You need to specify it as a `release` entry in your Procfile instead.
+
+See https://devcenter.heroku.com/articles/release-phase?preview=1\e[0m"
